@@ -1407,6 +1407,15 @@
 
         .boot-lines {
           color: #9aa5aa;
+          min-height: 1.8em;
+        }
+
+        .boot-lines div {
+          display: none;
+        }
+
+        .boot-lines div:first-child {
+          display: block;
         }
 
         .boot-lines div::before {
@@ -1538,7 +1547,7 @@
 
         .final-message {
           position: absolute;
-          top: 50%;
+          top: 40%;
           left: 50%;
           transform: translate(-50%, -50%);
           text-align: center;
@@ -2792,7 +2801,7 @@
           objects.push({
             x: 24 + Math.random() * (width - 48),
             y: -12,
-            speed: 46 + Math.random() * 18 + survivedFor * 1.2 + score * 0.7,
+            speed: 62 + Math.random() * 24 + survivedFor * 1.4 + score * 0.85,
             label: rare ? rareIdeas[Math.floor(Math.random() * rareIdeas.length)] : good ? 'IDEA' : badIdeas[Math.floor(Math.random() * badIdeas.length)],
             good,
             rare,
@@ -2923,6 +2932,9 @@
           const finalMessage = document.getElementById('final-message');
           const bootBarFill = document.getElementById('boot-bar-fill');
           const bootPercent = document.getElementById('boot-percent');
+          const bootLines = document.querySelectorAll('.boot-lines div');
+          const timeScale = 0.6;
+          const setTimeout = (callback, delay) => window.setTimeout(callback, delay * timeScale);
         
           // Check if already seen this session
           if (sessionStorage.getItem('opening-seen')) {
@@ -2944,13 +2956,21 @@
           let fragmentCount = 0;
           const fragmentIds = new Map();
           const sequenceStartedAt = performance.now();
-          const sequenceDuration = 5900;
+          const sequenceDuration = 2900;
           const progressTimer = setInterval(() => {
             const elapsed = performance.now() - sequenceStartedAt;
             const progress = Math.min(97, Math.round((elapsed / sequenceDuration) * 97));
             bootBarFill.style.width = progress + '%';
             bootPercent.textContent = progress + '%';
           }, 55);
+
+          bootLines.forEach((line, index) => {
+            if (index === 0) return;
+            setTimeout(() => {
+              bootLines.forEach((item) => item.style.display = 'none');
+              line.style.display = 'block';
+            }, index * 480);
+          });
 
           function randomX() {
             return Math.random() * 100;
@@ -3026,7 +3046,7 @@
           setTimeout(() => scanLine(800, 0), currentTime + 300);
           setTimeout(() => scanLine(600, 600), currentTime + 1100);
 
-          currentTime += 1600;
+          currentTime += 1400;
 
           // PHASE 3: CHAOS (1600-3000ms)
           const chaosSequence = [
@@ -3058,7 +3078,7 @@
           setTimeout(shake, currentTime + 500);
           setTimeout(shake, currentTime + 1200);
 
-          currentTime += 1400;
+          currentTime += 1100;
 
           // PHASE 4: PERSONAL SIGNAL (3000-3600ms)
           const personalSignals = [
@@ -3076,7 +3096,7 @@
             }, currentTime + sig.delay);
           });
 
-          currentTime += 600;
+          currentTime += 500;
 
           // PHASE 5: SYSTEM BREAK (3600-4100ms)
           const breakSequence = [
@@ -3097,7 +3117,7 @@
           setTimeout(shake, currentTime + 300);
           setTimeout(() => scanLine(1200, 0), currentTime);
 
-          currentTime += 500;
+          currentTime += 400;
 
           // PHASE 6: TOTAL SILENCE (4100-4500ms)
           // Black screen, all elements clear
@@ -3105,7 +3125,7 @@
             fragmentContainer.innerHTML = '';
           }, currentTime);
 
-          currentTime += 400;
+          currentTime += 300;
 
           // PHASE 7: FINAL LINE (4500-5200ms)
           const finalLines = [
@@ -3122,7 +3142,7 @@
             finalMessage.style.animation = 'message-appear 1200ms ease-in-out forwards';
           }, currentTime);
 
-          currentTime += 1200;
+          currentTime += 1000;
 
           // PHASE 8: REVEAL (5200+ms)
           setTimeout(() => {
