@@ -215,7 +215,9 @@
       .theme-wrap {
         position: relative;
         display: flex;
+        flex-direction: column;
         align-items: center;
+        gap: 6px;
       }
 
       .theme-toggle {
@@ -240,6 +242,25 @@
         transform: translateY(-1px);
         border-color: rgba(var(--accent-rgb), 0.6);
         background: rgba(12, 20, 28, 0.96);
+      }
+
+      .minimal-theme-toggle {
+        width: 100%;
+        padding: 0.38rem 0.5rem;
+        border: 1px solid rgba(var(--accent-rgb), 0.2);
+        background: rgba(255,255,255,0.03);
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 0.55rem;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
+      }
+
+      .minimal-theme-toggle:hover,
+      .minimal-theme-toggle:focus-visible {
+        border-color: rgba(var(--accent-rgb), 0.58);
+        color: var(--text);
       }
 
       .theme-panel {
@@ -1288,9 +1309,613 @@
           scroll-behavior: auto !important;
         }
       }
-    </style>
+        /* ===== OPENING SEQUENCE STYLES ===== */
+        .opening-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: #070d13;
+          z-index: 99999;
+          overflow: hidden;
+          font-family: 'SFMono-Regular', 'Consolas', monospace;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .opening-overlay.complete {
+          pointer-events: none;
+        }
+
+        .opening-overlay.complete .opening-content {
+          animation: opening-fade-out 0.6s ease-in forwards;
+        }
+
+        .opening-content {
+          position: relative;
+          width: 100%;
+          height: 100%;
+        }
+
+        .boot-readout {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          z-index: 2;
+          width: min(420px, calc(100% - 48px));
+          transform: translate(-50%, -50%);
+          color: #f4f4f0;
+          font-size: 0.72rem;
+          letter-spacing: 0.08em;
+          line-height: 1.8;
+          pointer-events: none;
+          text-shadow: 0 0 18px rgba(255, 255, 255, 0.12);
+        }
+
+        .boot-title {
+          margin-bottom: 0.7rem;
+          color: #fff;
+          font-size: 0.9rem;
+          letter-spacing: 0.18em;
+        }
+
+        .boot-title span {
+          color: #8fa8b8;
+        }
+
+        .boot-progress {
+          display: flex;
+          align-items: center;
+          gap: 0.65rem;
+          margin: 0.35rem 0 0.7rem;
+          color: #fff;
+        }
+
+        .boot-bar {
+          position: relative;
+          flex: 1;
+          height: 0.75rem;
+          overflow: hidden;
+          border: 1px solid rgba(255, 255, 255, 0.48);
+          background: rgba(255, 255, 255, 0.05);
+        }
+
+        .boot-bar::before {
+          position: absolute;
+          inset: 0;
+          content: '';
+          background: repeating-linear-gradient(90deg, transparent 0 7px, rgba(0, 0, 0, 0.22) 7px 9px);
+          z-index: 1;
+        }
+
+        .boot-bar-fill {
+          display: block;
+          width: 0%;
+          height: 100%;
+          background: #d9e6eb;
+          box-shadow: 0 0 16px rgba(217, 230, 235, 0.35);
+          transition: width 80ms linear;
+        }
+
+        .boot-percent {
+          min-width: 3.2em;
+          color: #b4c4cc;
+          text-align: right;
+        }
+
+        .boot-lines {
+          color: #9aa5aa;
+        }
+
+        .boot-lines div::before {
+          content: '> ';
+          color: #607781;
+        }
+
+        .boot-ready {
+          margin-top: 0.35rem;
+          color: #e8f5f1;
+          letter-spacing: 0.14em;
+        }
+
+        .opening-overlay.complete .boot-readout {
+          opacity: 0;
+          transition: opacity 0.12s ease-out;
+        }
+
+        @media (max-width: 520px) {
+          .boot-readout {
+            font-size: 0.63rem;
+            letter-spacing: 0.05em;
+          }
+
+          .boot-title {
+            font-size: 0.76rem;
+            letter-spacing: 0.12em;
+          }
+        }
+
+        .fragment-container {
+          position: relative;
+          width: 100%;
+          height: 100%;
+        }
+
+        .fragment {
+          position: absolute;
+          white-space: nowrap;
+          font-size: 0.75rem;
+          color: #fff;
+          letter-spacing: 0.08em;
+          opacity: 0;
+          pointer-events: none;
+          text-transform: uppercase;
+          line-height: 1.4;
+        }
+
+        .fragment.dim {
+          color: #888;
+        }
+
+        .fragment.error {
+          color: #ff6b6b;
+        }
+
+        .fragment.accent {
+          color: #64b5f6;
+        }
+
+        .fragment.success {
+          color: #81c784;
+        }
+
+        .fragment.glitch {
+          animation: glitch-flicker 0.15s infinite;
+        }
+
+        @keyframes glitch-flicker {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
+        }
+
+        @keyframes fragment-fade-in {
+          0% { opacity: 0; }
+          100% { opacity: 1; }
+        }
+
+        @keyframes fragment-fade-out {
+          0% { opacity: 1; }
+          100% { opacity: 0; }
+        }
+
+        @keyframes fragment-flicker {
+          0% { opacity: 1; }
+          25% { opacity: 0.2; }
+          50% { opacity: 1; }
+          75% { opacity: 0.4; }
+          100% { opacity: 0; }
+        }
+
+        @keyframes scan-line-sweep {
+          0% {
+            top: -100%;
+            opacity: 0;
+          }
+          5% {
+            opacity: 0.3;
+          }
+          95% {
+            opacity: 0.3;
+          }
+          100% {
+            top: 100%;
+            opacity: 0;
+          }
+        }
+
+        .scan-line {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+          pointer-events: none;
+        }
+
+        @keyframes screen-shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-2px); }
+          50% { transform: translateX(2px); }
+          75% { transform: translateX(-1px); }
+        }
+
+        .screen-shake {
+          animation: screen-shake 0.1s;
+        }
+
+        .final-message {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          text-align: center;
+          font-size: 1rem;
+          color: #fff;
+          letter-spacing: 0.05em;
+          opacity: 0;
+          white-space: nowrap;
+          pointer-events: none;
+        }
+
+        @keyframes message-appear {
+          0% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.95);
+          }
+          50% {
+            opacity: 1;
+          }
+          100% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(1);
+          }
+        }
+
+        @keyframes opening-fade-out {
+          0% {
+            opacity: 1;
+          }
+          100% {
+            opacity: 0;
+          }
+        }
+
+        @keyframes dissolve-fragments {
+          0% {
+            opacity: 1;
+          }
+          100% {
+            opacity: 0;
+          }
+        }
+
+        .opening-overlay.reduced-motion {
+          animation: opening-fade-out 0.5s ease-in forwards;
+          animation-delay: 0.8s;
+        }
+
+        .opening-overlay.reduced-motion .fragment-container,
+        .opening-overlay.reduced-motion .final-message {
+          display: none;
+        }
+
+        .ascii-noise {
+          position: absolute;
+          font-family: monospace;
+          font-size: 0.6rem;
+          color: rgba(255,255,255,0.1);
+          opacity: 0;
+          white-space: pre;
+          overflow: hidden;
+          pointer-events: none;
+        }
+
+        /* ===== AYUSH'S 9 MINIMAL THEME ===== */
+        body.ayush-minimal {
+          --bg: #f7f7f4;
+          --bg-2: #eeeeeb;
+          --panel: #ffffff;
+          --panel-strong: #ffffff;
+          --line: rgba(18, 22, 25, 0.18);
+          --line-strong: rgba(18, 22, 25, 0.32);
+          --text: #111315;
+          --muted: #4d5154;
+          --soft: #25282b;
+          --accent: #1b5365;
+          --accent-rgb: 27, 83, 101;
+          --accent-2: #244e5b;
+          --warning: #6c4b2c;
+          background: #f7f7f4;
+          color: var(--text);
+        }
+
+        body.ayush-minimal::before {
+          background-image:
+            linear-gradient(rgba(18,22,25,0.045) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(18,22,25,0.045) 1px, transparent 1px);
+          mask-image: linear-gradient(to bottom, black, transparent 78%);
+        }
+
+        body.ayush-minimal::after {
+          background: linear-gradient(180deg, rgba(255,255,255,0.8), transparent 42%);
+        }
+
+        body.ayush-minimal .site-header {
+          background: rgba(250,250,248,0.84);
+          border-bottom-color: rgba(18,22,25,0.1);
+        }
+
+        body.ayush-minimal .head-btn,
+        body.ayush-minimal .theme-toggle,
+        body.ayush-minimal .minimal-theme-toggle,
+        body.ayush-minimal .theme-panel,
+        body.ayush-minimal .nav,
+        body.ayush-minimal .menu-toggle {
+          background: rgba(255,255,255,0.76);
+          border-color: rgba(18,22,25,0.18);
+          color: var(--soft);
+        }
+
+        body.ayush-minimal .theme-panel {
+          box-shadow: 0 20px 60px rgba(18,22,25,0.12);
+        }
+
+        body.ayush-minimal .brand-mark {
+          border-color: rgba(18,22,25,0.25);
+          background: rgba(18,22,25,0.04);
+          color: var(--accent);
+        }
+
+        body.ayush-minimal .system-badge {
+          background: #eef1ef;
+          border-color: rgba(27,83,101,0.3);
+          color: #1b5365;
+        }
+
+        body.ayush-minimal .big-contrast {
+          background: #25282b;
+          color: #ffffff;
+        }
+
+        body.ayush-minimal .cta-button.primary {
+          background: #1b5365;
+          border-color: #1b5365;
+          color: #ffffff;
+        }
+
+        body.ayush-minimal .big-contrast {
+          background: #25282b;
+          color: #ffffff !important;
+        }
+
+        body.ayush-minimal .cta-button:not(.primary) {
+          background: #ffffff;
+          border-color: rgba(18,22,25,0.22);
+          color: #25282b;
+        }
+
+        body.ayush-minimal .system-panel,
+        body.ayush-minimal .system-mini,
+        body.ayush-minimal .work-card,
+        body.ayush-minimal .thought-card,
+        body.ayush-minimal .aside-box,
+        body.ayush-minimal .contact-card,
+        body.ayush-minimal .insights-archive,
+        body.ayush-minimal .warning-panel,
+        body.ayush-minimal .idea-game {
+          background: rgba(255,255,255,0.78);
+          border-color: rgba(18,22,25,0.16);
+          box-shadow: 0 18px 45px rgba(18,22,25,0.06);
+        }
+
+        body.ayush-minimal .timeline-item,
+        body.ayush-minimal .capability-item,
+        body.ayush-minimal .tag-chip,
+        body.ayush-minimal .status-pill {
+          border-color: rgba(18,22,25,0.18);
+          background: rgba(255,255,255,0.7);
+          color: var(--soft);
+        }
+
+        body.ayush-minimal #ascii-bg {
+          opacity: 0.12;
+          mix-blend-mode: multiply;
+        }
+
+        body.ayush-minimal .idea-game-canvas-wrap {
+          border-color: rgba(18,22,25,0.2);
+          background: #f1f1ee;
+        }
+
+        body.ayush-minimal .idea-game-canvas-wrap::after {
+          background: repeating-linear-gradient(0deg, transparent 0 5px, rgba(18,22,25,0.025) 5px 6px);
+        }
+
+        body.ayush-minimal h1,
+        body.ayush-minimal h2,
+        body.ayush-minimal h3,
+        body.ayush-minimal h4,
+        body.ayush-minimal h5,
+        body.ayush-minimal strong,
+        body.ayush-minimal .label,
+        body.ayush-minimal .category,
+        body.ayush-minimal .section-label,
+        body.ayush-minimal .system-badge,
+        body.ayush-minimal .tiny-note,
+        body.ayush-minimal .big-contrast {
+          color: #111315;
+        }
+
+        body.ayush-minimal .hero-copy,
+        body.ayush-minimal .intro-copy p,
+        body.ayush-minimal .work-card p,
+        body.ayush-minimal .thought-card p,
+        body.ayush-minimal .contact-card p,
+        body.ayush-minimal .system-mini p,
+        body.ayush-minimal .warning-panel p,
+        body.ayush-minimal .insights-archive p,
+        body.ayush-minimal .small-quiet {
+          color: #383c3f;
+        }
+
+        body.ayush-minimal .status-pill,
+        body.ayush-minimal .capability-item,
+        body.ayush-minimal .tag-chip,
+        body.ayush-minimal .dates,
+        body.ayush-minimal .meta,
+        body.ayush-minimal .tiny,
+        body.ayush-minimal .nav,
+        body.ayush-minimal .brand small {
+          color: #4d5154;
+        }
+
+        body.ayush-minimal .timeline-item,
+        body.ayush-minimal .work-card,
+        body.ayush-minimal .thought-card,
+        body.ayush-minimal .aside-box,
+        body.ayush-minimal .contact-card,
+        body.ayush-minimal .insights-archive,
+        body.ayush-minimal .warning-panel,
+        body.ayush-minimal .idea-game {
+          background: #ffffff;
+          border-color: rgba(18,22,25,0.22);
+        }
+
+        /* ===== IDEA SURVIVAL ===== */
+        .idea-game {
+          width: min(100%, 500px);
+          margin-top: 34px;
+          padding: 18px;
+          border: 1px solid var(--line-strong);
+          background: rgba(8, 13, 18, 0.78);
+          box-shadow: 0 20px 50px rgba(2, 5, 8, 0.24);
+        }
+
+        .idea-game-header,
+        .idea-game-stats,
+        .idea-game-footer {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+        }
+
+        .idea-game-header {
+          margin-bottom: 12px;
+        }
+
+        .idea-game-title {
+          color: var(--text);
+          font-size: 0.82rem;
+          letter-spacing: 0.16em;
+        }
+
+        .idea-game-kicker,
+        .idea-game-hint,
+        .idea-game-stats {
+          color: var(--muted);
+          font-size: 0.66rem;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+        }
+
+        .idea-game-stats {
+          margin-bottom: 8px;
+        }
+
+        .idea-game-stats strong {
+          color: var(--soft);
+          font-weight: 500;
+        }
+
+        .idea-game-canvas-wrap {
+          position: relative;
+          overflow: hidden;
+          border: 1px solid rgba(var(--accent-rgb), 0.28);
+          background: #05090d;
+        }
+
+        .idea-game-canvas-wrap::after {
+          position: absolute;
+          inset: 0;
+          background: repeating-linear-gradient(0deg, transparent 0 5px, rgba(255,255,255,0.018) 5px 6px);
+          content: '';
+          pointer-events: none;
+        }
+
+        #idea-game-canvas {
+          display: block;
+          width: 100%;
+          height: auto;
+          aspect-ratio: 2 / 1;
+          cursor: crosshair;
+          touch-action: none;
+        }
+
+        .idea-game-footer {
+          min-height: 34px;
+          margin-top: 10px;
+        }
+
+        .idea-game-status {
+          color: var(--accent-2);
+        }
+
+        .idea-game-status.game-over {
+          color: #f1c78b;
+        }
+
+        .idea-game-restart {
+          padding: 0.4rem 0.62rem;
+          border: 1px solid var(--line-strong);
+          background: transparent;
+          color: var(--soft);
+          cursor: pointer;
+          font-size: 0.64rem;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+        }
+
+        .idea-game-restart:hover,
+        .idea-game-restart:focus-visible {
+          border-color: rgba(var(--accent-rgb), 0.72);
+          color: var(--text);
+        }
+
+        @media (max-width: 520px) {
+          .idea-game {
+            padding: 14px;
+          }
+
+          .idea-game-header,
+          .idea-game-footer {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 6px;
+          }
+
+          .idea-game-restart {
+            width: 100%;
+          }
+        }
+      </style>
   </head>
   <body>
+    <!-- CINEMATIC OPENING SEQUENCE -->
+    <div class="opening-overlay" id="opening-overlay">
+      <div class="opening-content">
+        <div class="fragment-container" id="fragment-container"></div>
+        <div class="boot-readout" aria-live="polite">
+          <div class="boot-title">AYUSH-ASB9 <span>initializing...</span></div>
+          <div class="boot-progress">
+            <div class="boot-bar" aria-hidden="true"><span class="boot-bar-fill" id="boot-bar-fill"></span></div>
+            <span class="boot-percent" id="boot-percent">0%</span>
+          </div>
+          <div class="boot-lines">
+            <div>loading curiosity...</div>
+            <div>loading bad ideas...</div>
+            <div>loading research...</div>
+            <div>loading caffeine...</div>
+          </div>
+          <div class="boot-ready">SYSTEM READY.</div>
+        </div>
+        <div class="final-message" id="final-message"></div>
+      </div>
+    </div>
+
     <canvas id="ascii-bg" aria-hidden="true"></canvas>
 
     <header class="site-header" id="top">
@@ -1310,6 +1935,7 @@
 
         <div class="theme-wrap">
           <button class="theme-toggle mono" type="button" aria-expanded="false" aria-controls="theme-panel">SYSTEM // THEME</button>
+          <button class="minimal-theme-toggle mono" id="minimal-theme-toggle" type="button" aria-pressed="false">AYUSH'S 9 THEME</button>
           <div class="theme-panel" id="theme-panel" role="dialog" aria-label="Theme selector">
             <div class="header-line mono">THEME SELECTOR</div>
             <div class="header-line mono" style="margin-top: 0; padding-bottom: 6px; font-size: 0.56rem; color: var(--muted); letter-spacing: 0.12em;">PERSONALIZE THE SYSTEM.</div>
@@ -1544,6 +2170,25 @@
               </div>
             </article>
           </div>
+
+          <div class="idea-game reveal" id="idea-survival">
+            <div class="idea-game-header">
+              <div class="idea-game-title mono">IDEA SURVIVAL</div>
+              <div class="idea-game-kicker mono">catch ideas. avoid bullshit.</div>
+            </div>
+            <div class="idea-game-stats mono">
+              <span>IDEAS SAVED: <strong id="idea-score">00</strong></span>
+              <span>BEST: <strong id="idea-best">00</strong></span>
+            </div>
+            <div class="idea-game-canvas-wrap">
+              <canvas id="idea-game-canvas" width="920" height="460" tabindex="0" role="img" aria-label="Idea Survival game. Move horizontally to catch ideas and avoid bad startup concepts."></canvas>
+            </div>
+            <div class="idea-game-footer">
+              <span class="idea-game-hint mono" id="idea-game-hint">move to begin // arrows, A/D, or touch</span>
+              <span class="idea-game-status mono" id="idea-game-status" aria-live="polite"></span>
+              <button class="idea-game-restart mono" id="idea-game-restart" type="button">[ TRY AGAIN ]</button>
+            </div>
+          </div>
         </section>
 
         <section class="reveal">
@@ -1773,6 +2418,7 @@
       const themePanel = document.getElementById('theme-panel');
       const themeStatus = document.getElementById('theme-status');
       const themeOptions = document.querySelectorAll('.theme-option');
+      const minimalThemeToggle = document.getElementById('minimal-theme-toggle');
 
       function hexToRgb(hex) {
         const clean = hex.replace('#', '');
@@ -1822,12 +2468,28 @@
         const saved = localStorage.getItem('asb9-theme');
         const initial = themeMap[saved] ? saved : 'electric';
         applyTheme(initial);
+        applyMinimalTheme(localStorage.getItem('asb9-minimal-theme') === 'true');
+      }
+
+      function applyMinimalTheme(active) {
+        document.body.classList.toggle('ayush-minimal', active);
+        if (minimalThemeToggle) {
+          minimalThemeToggle.setAttribute('aria-pressed', String(active));
+          minimalThemeToggle.textContent = active ? 'RETURN TO ASB9 SYSTEM' : "AYUSH'S 9 THEME";
+        }
+        localStorage.setItem('asb9-minimal-theme', String(active));
       }
 
       if (themeToggle) {
         themeToggle.addEventListener('click', () => {
           const open = themePanel && themePanel.classList.toggle('open');
           themeToggle.setAttribute('aria-expanded', String(open));
+        });
+      }
+
+      if (minimalThemeToggle) {
+        minimalThemeToggle.addEventListener('click', () => {
+          applyMinimalTheme(!document.body.classList.contains('ayush-minimal'));
         });
       }
 
@@ -1998,6 +2660,455 @@
         window.addEventListener('resize', buildGrid);
         requestAnimationFrame(drawFrame);
       })();
+
+      // ===== IDEA SURVIVAL =====
+      (() => {
+        const canvas = document.getElementById('idea-game-canvas');
+        const gameSection = document.getElementById('idea-survival');
+        const scoreElement = document.getElementById('idea-score');
+        const bestElement = document.getElementById('idea-best');
+        const statusElement = document.getElementById('idea-game-status');
+        const hintElement = document.getElementById('idea-game-hint');
+        const restartButton = document.getElementById('idea-game-restart');
+        if (!canvas || !gameSection) return;
+
+        const context = canvas.getContext('2d');
+        const width = 460;
+        const height = 230;
+        const player = { x: width / 2, width: 54, height: 10 };
+        const badIdeas = ['SCOPE CREEP', 'NO USERS', 'AI WRAPPER', 'TOO BROAD', 'NO MOAT'];
+        const rareIdeas = ['F1', 'ANIME', 'REORBIT'];
+        let objects = [];
+        let score = 0;
+        let best = Number(localStorage.getItem('asb9-idea-best') || 0);
+        let running = false;
+        let frameId = 0;
+        let spawnLoop = 0;
+        let survivedFor = 0;
+        let hasStarted = false;
+
+        bestElement.textContent = String(best).padStart(2, '0');
+        context.scale(2, 2);
+
+        function resizePlayer(clientX) {
+          const bounds = canvas.getBoundingClientRect();
+          player.x = Math.max(player.width / 2, Math.min(width - player.width / 2, ((clientX - bounds.left) / bounds.width) * width));
+        }
+
+        function updateScore() {
+          scoreElement.textContent = String(score).padStart(2, '0');
+          bestElement.textContent = String(best).padStart(2, '0');
+        }
+
+        function setStatus(message) {
+          statusElement.textContent = message;
+        }
+
+        function startGame() {
+          if (!running) {
+            running = true;
+            hasStarted = true;
+            survivedFor = 0;
+            hintElement.textContent = 'good ideas survive // keep moving';
+            setStatus('');
+            statusElement.classList.remove('game-over');
+            frameId = window.setInterval(() => {
+              if (document.visibilityState !== 'hidden') {
+                update(1 / 60);
+                draw();
+              }
+            }, 16);
+            spawnObject(true);
+            scheduleNextSpawn();
+            draw();
+          }
+        }
+
+        function resetGame() {
+          if (frameId) window.clearInterval(frameId);
+          if (spawnLoop) window.clearTimeout(spawnLoop);
+          objects = [];
+          score = 0;
+          survivedFor = 0;
+          running = false;
+          updateScore();
+          hintElement.textContent = 'move to begin // arrows, A/D, or touch';
+          setStatus('');
+          draw();
+        }
+
+        function endGame() {
+          running = false;
+          if (frameId) {
+            window.clearInterval(frameId);
+            frameId = 0;
+          }
+          if (spawnLoop) {
+            window.clearTimeout(spawnLoop);
+            spawnLoop = 0;
+          }
+          if (score > best) {
+            best = score;
+            localStorage.setItem('asb9-idea-best', String(best));
+          }
+          updateScore();
+          hintElement.textContent = 'the market has spoken';
+          statusElement.classList.add('game-over');
+          setStatus('GAME OVER // BULLSHIT CAUGHT');
+          draw();
+        }
+
+        function spawnObject(firstDrop = false) {
+          const rare = !firstDrop && Math.random() < 0.04;
+          const good = firstDrop || rare || Math.random() > 0.36;
+          objects.push({
+            x: 24 + Math.random() * (width - 48),
+            y: -12,
+            speed: 46 + Math.random() * 18 + survivedFor * 1.2 + score * 0.7,
+            label: rare ? rareIdeas[Math.floor(Math.random() * rareIdeas.length)] : good ? 'IDEA' : badIdeas[Math.floor(Math.random() * badIdeas.length)],
+            good,
+            rare,
+          });
+        }
+
+        function scheduleNextSpawn() {
+          if (!running) return;
+          const delay = Math.max(400, 780 - survivedFor * 10 - score * 3);
+          spawnLoop = window.setTimeout(() => {
+            spawnObject();
+            scheduleNextSpawn();
+          }, delay);
+        }
+
+        function collect(object) {
+          if (!object.good) {
+            endGame();
+            return;
+          }
+          score += object.rare ? 3 : 1;
+          if (object.rare) setStatus(object.label === 'F1' ? 'box box.' : object.label === 'ANIME' ? 'still not a business model' : 'orbit secured');
+          updateScore();
+        }
+
+        function update(delta) {
+          survivedFor += delta;
+          objects.forEach((object) => {
+            object.y += object.speed * delta;
+          });
+
+          objects = objects.filter((object) => {
+            const caught = object.y + 9 >= height - 30 && object.y <= height - 20 && Math.abs(object.x - player.x) < player.width / 2 + 20;
+            if (caught) {
+              collect(object);
+              return false;
+            }
+            return object.y < height + 20 && running;
+          });
+        }
+
+        function draw() {
+          context.clearRect(0, 0, width, height);
+          context.fillStyle = 'rgba(255, 255, 255, 0.04)';
+          for (let line = 1; line < 5; line += 1) {
+            context.fillRect(0, line * 46, width, 1);
+          }
+
+          context.font = '10px SFMono-Regular, Consolas, monospace';
+          context.textAlign = 'center';
+          const isMinimal = document.body.classList.contains('ayush-minimal');
+          const goodColor = isMinimal ? '#25282b' : '#edf4fb';
+          const rareColor = isMinimal ? '#6c4b2c' : '#f1c78b';
+          const badColor = isMinimal ? '#626568' : '#87939b';
+          objects.forEach((object) => {
+            context.fillStyle = object.good ? (object.rare ? rareColor : goodColor) : badColor;
+            context.fillText(object.label, object.x, object.y);
+          });
+
+          if (!running && !hasStarted) {
+            context.fillStyle = isMinimal ? '#25282b' : '#edf4fb';
+            context.fillText('IDEA', width / 2, height / 2);
+          }
+
+          context.fillStyle = isMinimal ? 'rgba(27, 83, 101, 0.12)' : 'rgba(0, 168, 255, 0.16)';
+          context.fillRect(player.x - player.width / 2 - 5, height - 28, player.width + 10, player.height + 10);
+          context.strokeStyle = isMinimal ? '#1b5365' : '#79d8ff';
+          context.lineWidth = 1;
+          context.strokeRect(player.x - player.width / 2, height - 28, player.width, player.height);
+          context.fillStyle = '#edf4fb';
+          context.fillRect(player.x - 2, height - 35, 4, 7);
+        }
+
+        function loop(time) {
+          if (!running || document.visibilityState === 'hidden') {
+            frameId = 0;
+            return;
+          }
+          const delta = Math.min(0.04, (time - lastFrame) / 1000);
+          lastFrame = time;
+          update(delta);
+          draw();
+          frameId = requestAnimationFrame(loop);
+        }
+
+        function wakeLoop() {
+          if (running && document.visibilityState !== 'hidden' && !frameId) {
+            frameId = window.setInterval(() => {
+              if (document.visibilityState !== 'hidden') {
+                update(1 / 60);
+                draw();
+              }
+            }, 16);
+          }
+        }
+
+        canvas.addEventListener('pointerdown', (event) => {
+          canvas.setPointerCapture(event.pointerId);
+          resizePlayer(event.clientX);
+          startGame();
+        });
+        canvas.addEventListener('pointermove', (event) => {
+          if (event.pointerType === 'touch' || event.buttons > 0) resizePlayer(event.clientX);
+        });
+        document.addEventListener('keydown', (event) => {
+          if (!running && ['ArrowLeft', 'ArrowRight', 'a', 'd', 'A', 'D'].includes(event.key)) startGame();
+          if (!running) return;
+          if (event.key === 'ArrowLeft' || event.key.toLowerCase() === 'a') player.x -= 18;
+          if (event.key === 'ArrowRight' || event.key.toLowerCase() === 'd') player.x += 18;
+          player.x = Math.max(player.width / 2, Math.min(width - player.width / 2, player.x));
+        });
+        restartButton.addEventListener('click', () => {
+          resetGame();
+          startGame();
+          canvas.focus();
+        });
+
+        document.addEventListener('visibilitychange', wakeLoop);
+
+        updateScore();
+        draw();
+      })();
+
+        // ===== OPENING SEQUENCE =====
+        (function initOpeningSequence() {
+          const overlay = document.getElementById('opening-overlay');
+          const fragmentContainer = document.getElementById('fragment-container');
+          const finalMessage = document.getElementById('final-message');
+          const bootBarFill = document.getElementById('boot-bar-fill');
+          const bootPercent = document.getElementById('boot-percent');
+        
+          // Check if already seen this session
+          if (sessionStorage.getItem('opening-seen')) {
+            overlay.style.display = 'none';
+            return;
+          }
+
+          // Check for reduced motion preference
+          const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (prefersReducedMotion) {
+            overlay.classList.add('reduced-motion');
+            setTimeout(() => {
+              overlay.style.display = 'none';
+              sessionStorage.setItem('opening-seen', 'true');
+            }, 1300);
+            return;
+          }
+
+          let fragmentCount = 0;
+          const fragmentIds = new Map();
+          const sequenceStartedAt = performance.now();
+          const sequenceDuration = 5900;
+          const progressTimer = setInterval(() => {
+            const elapsed = performance.now() - sequenceStartedAt;
+            const progress = Math.min(97, Math.round((elapsed / sequenceDuration) * 97));
+            bootBarFill.style.width = progress + '%';
+            bootPercent.textContent = progress + '%';
+          }, 55);
+
+          function randomX() {
+            return Math.random() * 100;
+          }
+
+          function randomY() {
+            return Math.random() * 100;
+          }
+
+          function createFragment(text, duration, delay = 0, className = '', x = null, y = null) {
+            const frag = document.createElement('div');
+            frag.className = 'fragment';
+            if (className) frag.classList.add(...className.split(' '));
+            frag.textContent = text;
+          
+            const posX = x !== null ? x : randomX();
+            const posY = y !== null ? y : randomY();
+          
+            frag.style.left = posX + '%';
+            frag.style.top = posY + '%';
+            frag.style.animation = `fragment-fade-in 0.1s ease-out ${delay}ms forwards, fragment-fade-out 0.2s ease-in ${delay + duration - 200}ms forwards`;
+          
+            fragmentContainer.appendChild(frag);
+          
+            setTimeout(() => frag.remove(), delay + duration + 100);
+          }
+
+          function scanLine(duration, delay = 0) {
+            const line = document.createElement('div');
+            line.className = 'scan-line';
+            line.style.animation = `scan-line-sweep ${duration}ms linear ${delay}ms forwards`;
+            fragmentContainer.appendChild(line);
+          
+            setTimeout(() => line.remove(), delay + duration + 100);
+          }
+
+          function shake() {
+            fragmentContainer.classList.add('screen-shake');
+            setTimeout(() => fragmentContainer.classList.remove('screen-shake'), 100);
+          }
+
+          let currentTime = 0;
+
+          // PHASE 1: DEAD BLACK (0-200ms)
+          setTimeout(() => {
+            createFragment('wake_up.exe', 150, 50, 'dim');
+          }, 50);
+
+          currentTime = 200;
+
+          // PHASE 2: SYSTEM STARTUP (200-1600ms)
+          const startupMessages = [
+            { text: 'BOOTING...', delay: 0, duration: 200, x: 5, y: 15 },
+            { text: 'MEMORY CHECK', delay: 150, duration: 250, x: 80, y: 25 },
+            { text: 'DISPLAY ✓', delay: 250, duration: 180, x: 10, y: 50, className: 'success' },
+            { text: 'USER DETECTED', delay: 400, duration: 300, x: 70, y: 60, className: 'accent' },
+            { text: 'PROFILE: ASB9', delay: 550, duration: 250, x: 15, y: 35, className: 'accent' },
+            { text: 'TIME: 2026', delay: 700, duration: 200, x: 75, y: 45 },
+            { text: 'SIGNAL OK', delay: 850, duration: 280, x: 20, y: 70, className: 'success' },
+            { text: 'BUILD 09', delay: 1000, duration: 220, x: 80, y: 75, className: 'dim' },
+            { text: 'PROCESS_01', delay: 1150, duration: 200, x: 50, y: 20 },
+            { text: 'PROCESS_02', delay: 1250, duration: 240, x: 30, y: 80 },
+            { text: 'PROCESS_03', delay: 1350, duration: 180, x: 60, y: 40 },
+          ];
+
+          startupMessages.forEach(msg => {
+            setTimeout(() => {
+              createFragment(msg.text, msg.duration, 0, msg.className || '', msg.x, msg.y);
+            }, currentTime + msg.delay);
+          });
+
+          // Add scan lines during startup
+          setTimeout(() => scanLine(800, 0), currentTime + 300);
+          setTimeout(() => scanLine(600, 600), currentTime + 1100);
+
+          currentTime += 1600;
+
+          // PHASE 3: CHAOS (1600-3000ms)
+          const chaosSequence = [
+            { text: 'LOADING 12%', delay: 0, x: 10, y: 10 },
+            { text: 'LOADING 64%', delay: 80, x: 85, y: 20 },
+            { text: 'ERROR', delay: 150, x: 50, y: 50, className: 'error' },
+            { text: 'RETRY...', delay: 220, x: 20, y: 65 },
+            { text: '87%', delay: 280, x: 75, y: 30 },
+            { text: 'VALIDATING...', delay: 350, x: 5, y: 75 },
+            { text: '???', delay: 420, x: 50, y: 15, className: 'error' },
+            { text: 'ASYNC_INIT', delay: 500, x: 80, y: 60 },
+            { text: '100%', delay: 570, x: 30, y: 40, className: 'success' },
+            { text: 'WAIT', delay: 640, x: 70, y: 75 },
+            { text: 'NO', delay: 700, x: 15, y: 30, className: 'error' },
+            { text: 'FRAGMENTS [4]', delay: 770, x: 60, y: 65 },
+          ];
+
+          chaosSequence.forEach(item => {
+            setTimeout(() => {
+              createFragment(item.text, 100, 0, item.className || '', item.x, item.y);
+            }, currentTime + item.delay);
+          });
+
+          // Add more scan lines
+          setTimeout(() => scanLine(900, 100), currentTime);
+          setTimeout(() => scanLine(700, 900), currentTime + 500);
+        
+          // Shakes during chaos
+          setTimeout(shake, currentTime + 500);
+          setTimeout(shake, currentTime + 1200);
+
+          currentTime += 1400;
+
+          // PHASE 4: PERSONAL SIGNAL (3000-3600ms)
+          const personalSignals = [
+            { text: 'USER: AYUSH_ASB9', delay: 0, x: 50, y: 35, className: 'accent' },
+            { text: '[IDEAS: 15+ KILLED]', delay: 100, x: 10, y: 55, className: 'dim' },
+            { text: 'PROJECTS [FOUND]', delay: 200, x: 75, y: 20, className: 'success' },
+            { text: 'RESEARCH ACTIVE', delay: 300, x: 20, y: 70, className: 'accent' },
+            { text: '[F1, FILMS, ANIME]', delay: 400, x: 70, y: 60 },
+            { text: 'ORIGIN: INDIA', delay: 500, x: 15, y: 25, className: 'dim' },
+          ];
+
+          personalSignals.forEach(sig => {
+            setTimeout(() => {
+              createFragment(sig.text, 150, 0, sig.className || '', sig.x, sig.y);
+            }, currentTime + sig.delay);
+          });
+
+          currentTime += 600;
+
+          // PHASE 5: SYSTEM BREAK (3600-4100ms)
+          const breakSequence = [
+            { text: 'ACCELERATION', delay: 0, x: 40, y: 40 },
+            { text: '█████████', delay: 60, x: 30, y: 25 },
+            { text: 'OVERLOAD', delay: 120, x: 65, y: 65, className: 'error' },
+            { text: '>>>', delay: 180, x: 50, y: 50 },
+            { text: 'BREAK', delay: 240, x: 20, y: 30, className: 'error' },
+          ];
+
+          breakSequence.forEach(item => {
+            setTimeout(() => {
+              createFragment(item.text, 80, 0, item.className || '', item.x, item.y);
+            }, currentTime + item.delay);
+          });
+
+          setTimeout(shake, currentTime + 150);
+          setTimeout(shake, currentTime + 300);
+          setTimeout(() => scanLine(1200, 0), currentTime);
+
+          currentTime += 500;
+
+          // PHASE 6: TOTAL SILENCE (4100-4500ms)
+          // Black screen, all elements clear
+          setTimeout(() => {
+            fragmentContainer.innerHTML = '';
+          }, currentTime);
+
+          currentTime += 400;
+
+          // PHASE 7: FINAL LINE (4500-5200ms)
+          const finalLines = [
+            'you\'re probably wondering why this exists.',
+            'anyway.',
+            'welcome to the unnecessarily complicated version.',
+            'let\'s get weird.',
+            'overengineered and unnecessary.',
+          ];
+          const selectedLine = finalLines[Math.floor(Math.random() * finalLines.length)];
+
+          setTimeout(() => {
+            finalMessage.textContent = selectedLine;
+            finalMessage.style.animation = 'message-appear 1200ms ease-in-out forwards';
+          }, currentTime);
+
+          currentTime += 1200;
+
+          // PHASE 8: REVEAL (5200+ms)
+          setTimeout(() => {
+            clearInterval(progressTimer);
+            bootBarFill.style.width = '97%';
+            bootPercent.textContent = '97%';
+            overlay.classList.add('complete');
+          
+            setTimeout(() => {
+              overlay.style.display = 'none';
+              sessionStorage.setItem('opening-seen', 'true');
+            }, 600);
+          }, currentTime);
+        })();
     </script>
   </body>
 </html>
