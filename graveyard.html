@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="The ASB9 Graveyard — an archive of 15+ startup ideas killed, reframed, or shelved. 09 case files reconstructed." />
+    <meta name="keywords" content="Ayush Singh, ASB9, startups, killed ideas, archive" />
+    <meta name="theme-color" content="#080d13" />
+    <title>The ASB9 Graveyard</title>
+    <style>
+      :root {
+        --bg: #070d13;
+        --bg-2: #0b1219;
+        --panel: rgba(13, 19, 25, 0.78);
+        --panel-strong: rgba(16, 23, 29, 0.96);
+        --line: rgba(177, 199, 219, 0.12);
+        --line-strong: rgba(201, 220, 238, 0.2);
+        --text: #edf4fb;
+        --muted: #a9b8c5;
+        --soft: #dfeaf6;
+        --accent: #00A8FF;
+        --accent-rgb: 0, 168, 255;
+        --accent-2: #79d8ff;
+        --warning: #f1c78b;
+        --shadow: 0 26px 70px rgba(2, 5, 8, 0.52);
+        --radius: 22px;
+        --max: 1200px;
+      }
+
+      * { box-sizing: border-box; }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Inter, system-ui, -apple-system, sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(150, 180, 210, 0.08), transparent 24%),
+          linear-gradient(180deg, #070d13 0%, #0b1219 30%, #0a1017 100%);
+        color: var(--text);
+        line-height: 1.6;
+        min-height: 100vh;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      #ascii-bg {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.45;
+        mix-blend-mode: screen;
+      }
+
+      .site-header,
+      main,
+      .site-footer,
+      .page-shell,
+      .footer-shell,
+      .command-palette {
+        position: relative;
+        z-index: 1;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+        background-size: 32px 32px;
+        mask-image: radial-gradient(circle at center, black 55%, transparent 100%);
+        pointer-events: none;
+        z-index: -2;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(circle at 15% 10%, rgba(255,255,255,0.03), transparent 25%), radial-gradient(circle at 80% 20%, rgba(154, 204, 255, 0.03), transparent 28%);
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      a { color: inherit; text-decoration: none; }
+      button, input { font: inherit; }
+      img { max-width: 100%; display: block; }
+
+      .mono {
+        font-family: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .page-shell {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 0 22px 48px;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        backdrop-filter: blur(18px);
+        background: rgba(7, 13, 18, 0.72);
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+      }
+
+      .header-inner {
+        max-width: var(--max);
+        margin: 0 auto;
+        min-height: 72px;
+        padding: 0 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.8rem;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+        transition: color 160ms ease;
+      }
+
+      .back-link:hover,
+      .back-link:focus-visible {
+        color: var(--text);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text);
+        font-size: 0.88rem;
+        font-weight: 700;
+      }
+
+      .brand-mark {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        border: 1px solid rgba(214, 199, 174, 0.35);
+        background: rgba(214, 199, 174, 0.06);
+        color: var(--accent);
+        font-size: 0.68rem;
+        letter-spacing: 0.2em;
+      }
+
+      .brand small {
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .theme-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .theme-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        padding: 0.7rem 0.9rem;
+        border-radius: 999px;
+        border: 1px solid rgba(var(--accent-rgb), 0.28);
+        background: rgba(12, 18, 24, 0.84);
+        color: var(--soft);
+        font-size: 0.7rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+      }
+
+      .theme-toggle:hover,
+      .theme-toggle:focus-visible {
+        transform: translateY(-1px);
+        border-color: rgba(var(--accent-rgb), 0.6);
+        background: rgba(12, 20, 28, 0.96);
+      }
+
+      .theme-panel {
+        position: absolute;
+        top: calc(100% + 12px);
+        right: 0;
+        min-width: 230px;
+        padding: 12px 12px 10px;
+        border-radius: 16px;
+        border: 1px solid rgba(var(--accent-rgb), 0.2);
+        background: rgba(8, 12, 17, 0.96);
+        box-shadow: var(--shadow);
+        opacity: 0;
+        transform: translateY(-8px);
+        pointer-events: none;
+        transition: opacity 180ms ease, transform 180ms ease;
+      }
+
+      .theme-panel.open {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .theme-panel .header-line {
+        margin: 0 0 10px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(var(--accent-rgb), 0.16);
+        color: var(--muted);
+        font-size: 0.62rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .theme-option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 9px 8px;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        background: transparent;
+        color: var(--soft);
+        font-size: 0.68rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-align: left;
+        cursor: pointer;
+        transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
+      }
+
+      .theme-option:hover,
+      .theme-option:focus-visible,
+      .theme-option.is-active {
+        border-color: rgba(var(--accent-rgb), 0.24);
+        background: rgba(var(--accent-rgb), 0.08);
+        color: var(--text);
+      }
+
+      .theme-option .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        border: 1px solid rgba(255,255,255,0.18);
+        display: inline-block;
+        box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.3);
+      }
+
+      .theme-status {
+        position: absolute;
+        right: 0;
+        top: calc(100% + 8px);
+        font-size: 0.62rem;
+        letter-spacing: 0.18em;
+        color: var(--accent);
+        text-transform: uppercase;
+        opacity: 0;
+        transform: translateY(-6px);
+        transition: opacity 180ms ease, transform 180ms ease;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+
+      .theme-status.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .menu-toggle {
+        display: none;
+      }
+
+      section {
+        padding: 54px 0;
+        position: relative;
+      }
+
+      .section-label {
+        display: inline-block;
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+        color: var(--accent);
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+
+      h1, h2, h3, h4 {
+        margin: 0;
+        line-height: 0.98;
+        letter-spacing: -0.06em;
+      }
+
+      .archive-hero {
+        padding-top: 56px;
+        padding-bottom: 64px;
+        text-align: center;
+      }
+
+      .archive-hero h1 {
+        font-size: clamp(3.2rem, 8vw, 6.5rem);
+        font-weight: 800;
+        line-height: 0.9;
+        text-transform: uppercase;
+        letter-spacing: -0.08em;
+        margin-bottom: 8px;
+      }
+
+      .archive-meta {
+        font-size: 1.2rem;
+        letter-spacing: 0.14em;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-bottom: 32px;
+      }
+
+      .archive-meta strong {
+        color: var(--text);
+      }
+
+      .archive-intro {
+        max-width: 680px;
+        margin: 0 auto 32px;
+        color: var(--muted);
+        font-size: 1.12rem;
+        line-height: 1.7;
+      }
+
+      .archive-intro p {
+        margin: 0 0 16px;
+      }
+
+      .archive-intro p:last-child {
+        margin-bottom: 0;
+      }
+
+      .archive-motto {
+        max-width: 680px;
+        margin: 0 auto 0;
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        color: var(--text);
+        line-height: 1.2;
+        text-transform: uppercase;
+      }
+
+      .case-section {
+        margin-top: 64px;
+        padding-top: 48px;
+        border-top: 1px solid var(--line);
+      }
+
+      .section-title {
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: var(--text);
+      }
+
+      .section-description {
+        font-size: 1rem;
+        color: var(--muted);
+        margin-bottom: 32px;
+      }
+
+      .case-list {
+        display: grid;
+        gap: 16px;
+      }
+
+      .case-entry {
+        position: relative;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 20px;
+        background: rgba(10,15,20,0.75);
+        overflow: hidden;
+        transition: transform 180ms ease, border-color 180ms ease;
+      }
+
+      .case-entry:hover,
+      .case-entry:focus-within {
+        transform: translateY(-2px);
+        border-color: rgba(214,199,174,0.25);
+      }
+
+      .case-entry-header {
+        display: grid;
+        grid-template-columns: 120px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 20px;
+        padding: 24px;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .case-number {
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+        color: var(--accent);
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+
+      .case-title-wrap h3 {
+        font-size: clamp(1.3rem, 2.5vw, 2rem);
+        margin: 6px 0 8px;
+      }
+
+      .case-status {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 6px;
+        background: rgba(var(--accent-rgb), 0.12);
+        border: 1px solid rgba(var(--accent-rgb), 0.24);
+        color: var(--accent);
+        font-size: 0.65rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .case-expand {
+        justify-self: end;
+        color: var(--muted);
+        font-size: 1.2rem;
+        transition: transform 260ms ease;
+        padding: 8px;
+      }
+
+      .case-entry.open .case-expand {
+        transform: rotate(45deg);
+      }
+
+      .case-details {
+        display: none;
+        border-top: 1px solid rgba(255,255,255,0.06);
+        padding: 0 24px 24px;
+        animation: slideDown 300ms ease forwards;
+      }
+
+      .case-entry.open .case-details {
+        display: block;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .case-content {
+        display: grid;
+        gap: 24px;
+      }
+
+      .case-section-group {
+        display: grid;
+        gap: 16px;
+      }
+
+      .case-field-label {
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+        color: var(--accent);
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .case-field-content {
+        color: var(--muted);
+        font-size: 1.02rem;
+        line-height: 1.7;
+      }
+
+      .case-field-content strong {
+        color: var(--text);
+      }
+
+      .case-field-content p {
+        margin: 0 0 12px;
+      }
+
+      .case-field-content p:last-child {
+        margin-bottom: 0;
+      }
+
+      .case-subsection {
+        padding-left: 12px;
+        border-left: 2px solid rgba(var(--accent-rgb), 0.2);
+      }
+
+      .case-lesson {
+        padding: 16px 18px;
+        border-radius: 14px;
+        background: rgba(var(--accent-rgb), 0.08);
+        border: 1px solid rgba(var(--accent-rgb), 0.16);
+        margin-top: 12px;
+      }
+
+      .case-lesson-label {
+        font-size: 0.68rem;
+        letter-spacing: 0.12em;
+        color: var(--accent);
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+
+      .case-lesson-text {
+        color: var(--text);
+        font-size: 1rem;
+        line-height: 1.6;
+        font-style: italic;
+      }
+
+      .case-link-list {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+
+      .case-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(var(--accent-rgb), 0.24);
+        background: rgba(var(--accent-rgb), 0.06);
+        color: var(--accent);
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        transition: transform 160ms ease, background 160ms ease;
+      }
+
+      .case-link:hover,
+      .case-link:focus-visible {
+        transform: translateY(-1px);
+        background: rgba(var(--accent-rgb), 0.12);
+      }
+
+      .case-link::after {
+        content: "↗";
+      }
+
+      .fragments-section {
+        margin-top: 32px;
+        padding: 24px;
+        border-radius: 20px;
+        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(10,15,20,0.75);
+      }
+
+      .fragments-label {
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+        color: var(--accent);
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 16px;
+      }
+
+      .fragments-text {
+        color: var(--muted);
+        font-size: 1.08rem;
+        line-height: 1.7;
+        margin-bottom: 20px;
+      }
+
+      .fragments-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 12px;
+      }
+
+      .fragment-card {
+        padding: 16px 12px;
+        border-radius: 12px;
+        border: 1px dashed rgba(var(--accent-rgb), 0.2);
+        background: rgba(var(--accent-rgb), 0.04);
+        text-align: center;
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+        text-transform: uppercase;
+      }
+
+      .case-navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-top: 32px;
+        padding: 18px 24px;
+        border-radius: 16px;
+        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(10,15,20,0.75);
+      }
+
+      .nav-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(13,19,25,0.8);
+        color: var(--soft);
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: transform 160ms ease, border-color 160ms ease;
+      }
+
+      .nav-button:hover,
+      .nav-button:focus-visible {
+        transform: translateY(-1px);
+        border-color: rgba(214,199,174,0.25);
+      }
+
+      .nav-button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .nav-button:disabled:hover {
+        transform: none;
+      }
+
+      .site-footer {
+        padding: 18px 0 42px;
+      }
+
+      .footer-shell {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 0 22px;
+        border-top: 1px solid rgba(255,255,255,0.08);
+      }
+
+      .footer-inner {
+        display: grid;
+        gap: 12px;
+        padding-top: 18px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .footer-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        font-size: 0.7rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .footer-inner p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
+      .command-palette {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(2, 5, 8, 0.74);
+        backdrop-filter: blur(10px);
+        z-index: 100;
+      }
+
+      .command-palette.open {
+        display: flex;
+      }
+
+      .command-panel {
+        width: min(620px, calc(100vw - 30px));
+        border-radius: 22px;
+        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(8, 13, 18, 0.96);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .command-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 18px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        color: var(--muted);
+        font-size: 0.72rem;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      .command-header .k {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 30px;
+        min-height: 30px;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.02);
+      }
+
+      .command-header input {
+        flex: 1;
+        border: 0;
+        background: transparent;
+        color: var(--text);
+        font-size: 1rem;
+        outline: none;
+      }
+
+      .command-list {
+        display: grid;
+        gap: 8px;
+        padding: 12px;
+      }
+
+      .command-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        background: rgba(255,255,255,0.01);
+        color: var(--soft);
+        cursor: pointer;
+      }
+
+      .command-item:hover,
+      .command-item:focus-visible {
+        border-color: rgba(214,199,174,0.2);
+        background: rgba(255,255,255,0.02);
+      }
+
+      .command-item .name {
+        font-size: 0.8rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .command-item .shortcut {
+        color: var(--muted);
+        font-size: 0.68rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity 500ms ease, transform 500ms ease;
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 700px) {
+        .case-entry-header {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .case-expand {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+        }
+
+        .archive-hero {
+          padding-top: 40px;
+          padding-bottom: 48px;
+        }
+
+        .archive-hero h1 {
+          font-size: clamp(2.2rem, 6vw, 4rem);
+        }
+
+        .case-details {
+          padding: 0 18px 18px;
+        }
+
+        .case-entry-header {
+          padding: 20px 20px 20px 20px;
+        }
+
+        .case-navigation {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .nav-button {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .nav-button:disabled {
+          display: none;
+        }
+
+        .fragments-grid {
+          grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after {
+          animation: none !important;
+          transition: none !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="ascii-bg" aria-hidden="true"></canvas>
+
+    <header class="site-header" id="top">
+      <div class="header-inner">
+        <a class="back-link mono" href="index.html">← BACK TO AYUSH-ASB9</a>
+
+        <div class="theme-wrap">
+          <button class="theme-toggle mono" type="button" aria-expanded="false" aria-controls="theme-panel">SYSTEM // THEME</button>
+          <div class="theme-panel" id="theme-panel" role="dialog" aria-label="Theme selector">
+            <div class="header-line mono">THEME SELECTOR</div>
+            <div class="header-line mono" style="margin-top: 0; padding-bottom: 6px; font-size: 0.56rem; color: var(--muted); letter-spacing: 0.12em;">PERSONALIZE THE SYSTEM.</div>
+            <button class="theme-option is-active" type="button" data-theme="electric"><span>ELECTRIC</span><span class="dot" style="background:#00A8FF"></span></button>
+            <button class="theme-option" type="button" data-theme="terminal"><span>TERMINAL</span><span class="dot" style="background:#00FF88"></span></button>
+            <button class="theme-option" type="button" data-theme="amber"><span>AMBER</span><span class="dot" style="background:#FFB000"></span></button>
+            <button class="theme-option" type="button" data-theme="violet"><span>VIOLET</span><span class="dot" style="background:#9B5CFF"></span></button>
+            <button class="theme-option" type="button" data-theme="red"><span>RED</span><span class="dot" style="background:#FF3B4E"></span></button>
+            <button class="theme-option" type="button" data-theme="ice"><span>ICE</span><span class="dot" style="background:#E8F1FF"></span></button>
+          </div>
+          <div class="theme-status mono" id="theme-status">ASB9.SYS // THEME CHANGED</div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-shell">
+        <section class="archive-hero reveal">
+          <h1>THE ASB9 GRAVEYARD</h1>
+          <div class="archive-meta mono">15+ Ideas Killed — <strong>09 Case Files Reconstructed</strong></div>
+
+          <div class="archive-intro">
+            <p>Not every idea failed. Some were too broad. Some had no moat. Some had terrible distribution. Some were simply too early.</p>
+          </div>
+
+          <div class="archive-motto">IDEAS DIE.<br>THE THINKING SURVIVES.</div>
+        </section>
+
+        <!-- KILLED SECTION -->
+        <section class="case-section reveal">
+          <h2 class="section-title">KILLED</h2>
+          <p class="section-description">Ideas that were properly investigated and permanently put to rest. The thinking that killed them is documented here.</p>
+
+          <div class="case-list" id="killed-cases"></div>
+        </section>
+
+        <!-- SHELVED / SOMEDAY SECTION -->
+        <section class="case-section reveal">
+          <h2 class="section-title">SHELVED / SOMEDAY</h2>
+          <p class="section-description">Projects that are not dead, but not being pursued right now. Timing is part of validation.</p>
+
+          <div class="case-list" id="shelved-cases"></div>
+        </section>
+
+        <!-- ACTIVE / VALIDATING SECTION -->
+        <section class="case-section reveal">
+          <h2 class="section-title">ACTIVE / VALIDATING</h2>
+          <p class="section-description">Current work. Still being investigated. Not convinced yet.</p>
+
+          <div class="case-list" id="active-cases"></div>
+        </section>
+
+        <!-- UNRECOVERED FRAGMENTS -->
+        <section class="case-section reveal">
+          <div class="fragments-section">
+            <div class="fragments-label mono">UNRECOVERED FRAGMENTS</div>
+            <p class="fragments-text">There are 15+ ideas behind this archive. I don't remember enough about all of them to pretend I do. So I'm leaving the incomplete ones incomplete.</p>
+            <div class="fragments-grid">
+              <div class="fragment-card mono">[RECORD LOST]</div>
+              <div class="fragment-card mono">[RECORD LOST]</div>
+              <div class="fragment-card mono">[RECORD LOST]</div>
+              <div class="fragment-card mono">[RECORD LOST]</div>
+              <div class="fragment-card mono">[RECORD LOST]</div>
+              <div class="fragment-card mono">[RECORD LOST]</div>
+              <div class="fragment-card mono" style="font-style: italic;">[RECORD LOST +]</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CASE FILE DETAIL VIEW -->
+        <div id="case-detail-modal" style="display: none;">
+          <div class="case-detail-content" id="case-detail-content"></div>
+          <div class="case-navigation" id="case-navigation"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-shell">
+        <div class="footer-inner">
+          <div class="footer-row mono">
+            <a href="index.html">← BACK TO HOME</a>
+            <span>GRAVEYARD.SYS // 09</span>
+            <span>2026</span>
+          </div>
+          <p>an archive of things investigated hard enough to stop building.</p>
+        </div>
+      </div>
+    </footer>
+
+    <div class="command-palette" id="command-palette" aria-hidden="true">
+      <div class="command-panel">
+        <div class="command-header mono">
+          <span class="k">⌘K</span>
+          <input id="command-input" aria-label="Command palette" placeholder="type a command" />
+        </div>
+        <div class="command-list">
+          <a class="command-item" href="index.html"><span class="name">HOME</span><span class="shortcut">WEB</span></a>
+          <button class="command-item" type="button" data-action="close-all"><span class="name">COLLAPSE ALL</span><span class="shortcut">ESC</span></button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const caseStudies = {
+        killed: [
+          {
+            id: 1,
+            number: "001",
+            title: "PROJECT AEGIS",
+            status: "KILLED / REFRAMED",
+            category: "Privacy / Computer Vision",
+            originalThesis: "Protect people from visual privacy attacks while using a laptop in public.",
+            found: `The first thing I checked was whether the basic idea already existed. It did. Gaze Guard was already exploring screen-watching detection and protective actions. EyesOff was also working around shoulder-surfing detection using face detection and gaze direction. There was also research around visual privacy and gaze-based shoulder surfing, including Eye-Shield and ShouldAR.\n\nThe biggest discovery was an older 2017 patent: US9600688B2. Therefore: DO NOT claim that nobody had done this before. DO NOT claim the patent created a complete barrier to building the idea.\n\nThe important realization was that the original thesis was not differentiated enough.`,
+            reframe: `The system shouldn't simply ask: "Is someone looking at my screen?"\n\nThe more interesting question became: "Is my information actually at risk right now?"\n\nExample: Someone walks behind me in a cafe and looks toward my laptop for half a second. Automatically blurring everything would be annoying. Compare that with someone standing at readable distance, staring at the exact area containing sensitive financial information for several seconds. Those are completely different risk levels.\n\nPotential inputs: who the person is, where they are, distance, gaze direction, duration, what part of the screen they can actually see, what information exists in that region.\n\nPotential responses: LOW RISK → do nothing. MEDIUM RISK → protect sensitive information. HIGH RISK → stronger masking. VERY HIGH CONFIDENCE → camouflage / lock.\n\nThe camouflage concept also had prior art, so do not describe it as completely novel. The broader direction became something closer to VISUAL DLP: Traditional cybersecurity protects digital information from unauthorized access or leakage. This would explore protecting information once it is physically displayed on a screen.`,
+            verdict: "KILLED / REFRAMED",
+            lesson: "The original problem was real. The original framing wasn't differentiated enough.",
+            links: [
+              { text: "US Patent US9600688B2", url: "https://patents.google.com/patent/US9600688B2/en" }
+            ]
+          },
+          {
+            id: 2,
+            number: "002",
+            title: "CREATOR OS",
+            status: "KILLED",
+            category: "Creator Economy / Software",
+            originalThesis: "An operating system / all-in-one layer for creators. Creators are becoming businesses, but their tooling remains fragmented.",
+            found: `The goal was to give creators one place to manage the messy business side of being a creator. Potential areas: creator workflow / operations, content-related work, business/admin, brand deals, monetization, audience, other creator back-office functions.\n\nThe bigger vision: "What if we built the Shopify / Notion / OS equivalent for an individual creator?" Instead of another tool for one task, the ambition was to own the layer connecting the different things creators do.`,
+            killed: `Scope exploded. Content management? Brand deals? Analytics? Finance? Contracts? Audience? Sponsorships? CRM? Workflow?\n\nThere were already specialized products attacking individual pieces. The central question became: "What is the one thing they'll desperately use this for, which gives us the right to eventually become their OS?" We couldn't find that wedge strongly enough.`,
+            verdict: "KILLED — TOO BROAD / NO SHARP INITIAL WEDGE",
+            lesson: "Don't start with the OS. Start with the killer app.",
+            links: []
+          },
+          {
+            id: 3,
+            number: "003",
+            title: "AI CREATOR BUSINESS ADVISOR / CREATOR LAUNCH SIMULATOR",
+            status: "KILLED",
+            category: "Creator Economy / AI",
+            originalThesis: "An AI that acts like a business brain for creators. Creators already have data across platforms such as YouTube, Instagram, Shopify and Stripe, but lack a system that turns that information into useful business decisions.",
+            found: `Potential capabilities: predicting whether a product launch could work, predicting audience purchasing behavior, evaluating product/audience fit, protecting audience trust, pricing, demand estimation, connecting creator data, eventually automating parts of business workflow.\n\nNames explored: AI Creator Business Advisor, AI Brand Launch Simulator, AI Audience Brain.\n\nMonetization explored: roughly $20–100/month. But the product needed one extremely valuable "superpower."`,
+            killed: `The AI itself wasn't enough differentiation. "Connect all your creator data and ask AI questions about your business" could easily become: ChatGPT + analytics tools.\n\nThe more ambitious version also required difficult integrations, clean data and enough creator history to make predictions useful. Most importantly: We never found the single prediction/decision a creator would reliably pay around $50/month for.`,
+            verdict: "KILLED — STRONG THESIS, WEAK INITIAL WEDGE + TOO EASY TO BECOME AN AI WRAPPER",
+            lesson: "Don't confuse 'we can connect lots of data and make smart predictions' with 'there's a painful problem someone will pay us to solve.'",
+            links: []
+          },
+          {
+            id: 4,
+            number: "004",
+            title: "RETRIEVE AI",
+            status: "KILLED",
+            category: "E-waste / Hardware / Valuation",
+            originalThesis: "A system that analyzes discarded electronics/hardware and helps recyclers understand what metals/materials are present and what components are worth. The concept involved XRF + software/AI/data.",
+            found: `We spoke with recycling companies across Africa and India. The important discovery: The competition wasn't necessarily another software company. It was experience.\n\nExperienced recyclers could often identify boards/components, estimate what they contained and understand approximate market value from years of practical experience. Then there was the XRF problem: The solution became significantly more useful with XRF, but many potential customers didn't already own the equipment. That created a hardware adoption problem.`,
+            killed: `There was also the incentive issue: If the system systematically underestimated material value, buyers could benefit. But sellers could have an incentive to avoid selling through a system they believed undervalued their material.\n\nFINAL KILL SHOT: Experience > software adoption + XRF hardware dependency + buyer/seller incentive conflict.`,
+            verdict: "KILLED",
+            lesson: "Your competition isn't always another startup. Sometimes it's 20 years of someone's experience.",
+            links: []
+          },
+          {
+            id: 5,
+            number: "005",
+            title: "AI PITCH DECK MAKER",
+            status: "KILLED",
+            category: "Fundraising / AI",
+            originalThesis: "An AI tool for founders that doesn't just generate slides but understands the startup and helps build the fundraising narrative.",
+            found: `Potential capabilities: identify strongest narrative, identify weak parts of pitch, positioning, investor story, deck structure, deck generation, challenge founder assumptions.\n\nThe product was somewhere between: AI writer + pitch strategist + deck builder.`,
+            killed: `The product was becoming increasingly easy to build and increasingly hard to differentiate. General-purpose AI could already handle large parts of the work. Dedicated AI deck tools already existed.\n\nMy experience working with Impactful Pitch also gave me firsthand exposure to how developed the fundraising/pitch-deck space already was. Impactful Pitch had also launched InstaPitch.io, which reinforced the market direction.`,
+            moatTest: `No obvious proprietary data advantage. No strong network effect. No clear distribution advantage. Core technology was rapidly becoming commodity AI capability.\n\nThere was also an episodic usage problem: Founders don't make pitch decks every week. So: Crowded market + commoditizing technology + weak moat + episodic usage.`,
+            verdict: "KILLED",
+            lesson: "A real problem with paying customers isn't automatically a good startup opportunity. Question to preserve prominently: 'If this works, what stops 10 other companies from doing exactly the same thing?'",
+            links: []
+          },
+          {
+            id: 6,
+            number: "006",
+            title: "TIKTOK FOR FUNDRAISING",
+            status: "KILLED",
+            category: "Fundraising / Marketplace",
+            originalThesis: "A short-form video platform where founders pitch startups in 30–60 second videos and investors discover startups by scrolling.",
+            found: `Basic flow: Founder uploads pitch → investor discovers → investor shows interest → conversation. Core thesis: "Why is startup discovery still happening through decks, cold emails and warm intros when literally everything else has become algorithmically discoverable?"`,
+            whyWeLiked: `The discovery insight was genuinely interesting. Music → algorithmic discovery. Content → algorithmic discovery. Products → algorithmic discovery. Jobs → algorithmic discovery. Startup discovery still relies heavily on: "Hey, I know a guy who knows a VC." That seemed wrong.`,
+            whyWeKilledIt: `1. TWO-SIDED MARKETPLACE: Good founders need investors. Investors need good founders. Empty feed → useless to investors. No investors → no reason for founders to upload. Classic chicken-and-egg.\n\n2. INVESTOR WORKFLOW: Investors already have deal flow through: warm intros, cold emails, accelerators, scouts, events, LinkedIn, existing networks, referrals. The pitch was: "Here's another way to discover startups. Please change your workflow." Hard sell.\n\n3. THE TIKTOK PROBLEM: Short-form video can create curiosity. But investing isn't entertainment. After the video, investors still need: deck, financials, market research, references, founder calls, diligence. The risk was optimizing: views → likes → followers instead of: views → qualified conversations → investments.\n\n4. BEHAVIOR CHANGE: We were trying to change both sides of an existing high-trust market simultaneously. Investors weren't suffering enough from the current system to force them to change.`,
+            verdict: "KILLED",
+            lesson: "'This should exist' isn't enough. The better question: 'Who desperately wants this badly enough to change what they're already doing?'",
+            links: []
+          },
+          {
+            id: 7,
+            number: "007",
+            title: "AI LUXURY CONCIERGE",
+            status: "KILLED",
+            category: "Luxury / AI / Services",
+            originalThesis: "An AI-powered luxury concierge that could handle high-end requests and actually execute them.",
+            found: `Not just: "Here are five luxury hotels." But: "I need to be in Paris next Thursday, want a very specific experience, and don't care about the price." Then the system figures everything out.\n\nInsight: For wealthy customers, money isn't necessarily the scarce resource. Time, access and convenience are.`,
+            killed: `The AI wasn't the hard part. Execution was. The product would require relationships with: hotels, restaurants, travel operators, event organizers, luxury brands, private experiences, local vendors.\n\nWithout those relationships: AI = fancy recommendation engine. With those relationships: AI + supplier network + human operations + trust + execution. And then it starts becoming a concierge/operations company.`,
+            additionalInsight: `Trust Problem: Luxury customers pay for certainty. A failed high-value experience can destroy trust.\n\nExisting Behavior: Wealthy customers may already have: private banks, credit cards, hotels, family offices, personal assistants, concierge services. So the product would be asking them to replace an existing high-trust relationship.`,
+            verdict: "KILLED",
+            lesson: "When the customer is paying for access and certainty, better AI doesn't automatically create the product.",
+            links: []
+          },
+          {
+            id: 8,
+            number: "008",
+            title: "CO-FOUNDER COMPATIBILITY / RELATIONSHIP MATCHING",
+            status: "KILLED",
+            category: "Founders / Marketplace / Human Relationships",
+            originalThesis: "Not 'Tinder for co-founders.' The actual problem: 'This person looks fucking perfect on paper, but I have no idea if I can actually build a company with them.'",
+            found: `Instead of matching on: skills, industry, location, startup interests, technical/non-technical, experience, we wanted to understand the relationship.\n\nPotential dimensions: decision-making, disagreement, risk tolerance, work style, communication, ambition, time commitment, reaction under pressure, expectations, long-term goals.`,
+            interestingDirection: `Don't simply predict compatibility. Test the relationship. MATCH → SMALL PROJECT → DISAGREEMENT → PROBLEM SOLVING → FEEDBACK → DECIDE WHETHER TO BUILD TOGETHER.\n\nEssentially: "Dating before marriage, but for co-founders."`,
+            killed: `Can questionnaires, personality tests or AI reliably predict how two people will behave after months of: missed deadlines, fundraising stress, disagreements, pressure? Probably not reliably enough. People can answer strategically. Behavior under real startup pressure is different.\n\nThere was also the danger of false confidence: "Our system says you're highly compatible." The marketplace had another issue: Users don't need hundreds of matches. They might find one person and leave forever. Successful matching could literally mean losing the customer.`,
+            deeperQuestion: `Can compatibility actually be measured before two people have experienced real startup pressure together? We couldn't convince ourselves the answer was yes.`,
+            verdict: "KILLED",
+            lesson: "Some problems are real but fundamentally hard to measure. The potentially better direction isn't: 'We'll tell you who your perfect co-founder is.' It's: 'We'll help you discover whether you two can actually survive building together.'",
+            links: []
+          },
+          {
+            id: 9,
+            number: "009",
+            title: "INDIE ANIME PRODUCTION PLATFORM",
+            status: "KILLED",
+            category: "Anime / Creative Economy / Marketplace",
+            originalThesis: "A platform to increase anime production in India by connecting indie animators, artists, writers and other creatives so they can form teams and actually make anime.",
+            found: `The other side would help investors discover and fund promising projects. Basic flow: TALENT → TEAM → PROJECT → FUNDING → PRODUCTION.\n\nThe bigger vision: "What if the next great Indian anime didn't need an established studio to exist?"`,
+            research: `The platform was actually trying to solve: talent discovery, team formation, collaboration, production management, funding, investor discovery, IP, contracts, confidentiality, distribution.\n\nA real-world experience made the trust/IP problem concrete: An Australian animator approached me about helping with a project. I was willing to work for free, but when she shared project details, she asked me to sign an NDA. I declined and walked away. That showed how much infrastructure exists underneath creative collaboration: trust, confidentiality, IP ownership, contracts.`,
+            investorSide: `Investors need to believe in: team, story, production capability, audience, distribution, economics. Which creates another chicken-and-egg loop: Creators need investors. Investors need strong projects. Strong projects need creators + funding.`,
+            killShot: `The problem was real. India has creative talent. Anime has a growing audience. Funding is a genuine bottleneck. But connecting everyone wasn't enough to solve production.\n\nThe platform was becoming: part production company + part marketplace + part investor network + part industry infrastructure.`,
+            verdict: "KILLED",
+            lesson: "A huge industry problem doesn't mean a huge platform is the right starting point. Sometimes fragmentation exists because of deep coordination, trust, capital and execution problems — not because nobody built the right marketplace.",
+            links: []
+          }
+        ],
+        shelved: [
+          {
+            id: 10,
+            number: "SHL-01",
+            title: "REORBIT",
+            status: "POSTPONED — NOT KILLED",
+            category: "Space Technology",
+            overview: "ReOrbit is a space-tech project related to recycling / dealing with orbital debris.",
+            whyPostponed: `The project requires technical, financial, operational and ecosystem resources that we don't currently have. My co-founder is on a career break, and we plan to continue working on it in a few months.\n\nWe deliberately don't want to rush a dream project into becoming a half-built startup.`,
+            whyNotKilled: `This isn't: "Maybe one day I'll build a space startup." It's: "We started this too early. We'll come back when we're actually capable of building it."`,
+            validation: `This was taken seriously. We had: built a website, made a pitch deck, registered it with UNOOSA, registered it with the FCC, spoken with people in the space industry, spoken with a NASA researcher.`,
+            verdict: "POSTPONED — NOT KILLED",
+            lesson: "Timing is part of validation too. Not every good idea needs to be killed. Some just need to wait.",
+            links: []
+          }
+        ],
+        active: [
+          {
+            id: 11,
+            number: "ACT-01",
+            title: "HIGH-VALUE ASSET VERIFICATION",
+            status: "CURRENTLY VALIDATING",
+            category: "Art / Insurance / Verification",
+            overview: "An AI-powered evidence layer that connects claims about an asset to their source documents, identifies contradictions/missing evidence and creates a clear evidence trail for human experts.",
+            positioning: `Potential users include: art insurers, art-backed lenders, family offices, potentially other high-value asset businesses.\n\nThe system should NOT claim: "AI says this is authentic."\n\nThe positioning is: "What does the evidence actually support?"`,
+            approach: `The system distinguishes between: supported evidence, seller-provided claims, missing evidence, contradictions, unresolved issues.`,
+            moatExploration: `Potential moat being explored: structured evidence graph, workflows, integrations, historical data, expert decisions.`,
+            caveat: `This project is STILL BEING VALIDATED. Do not present the idea as finished. Do not present the market as validated. Do not present the business as certain.`,
+            verdict: "ACTIVE / VALIDATING",
+            lesson: "Still investigating. Not convinced yet. More research required.",
+            links: []
+          }
+        ]
+      };
+
+      // Render cases
+      function renderCases(containerId, caseArray) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        container.innerHTML = caseArray.map((c) => `
+          <div class="case-entry" data-case-id="${c.id}">
+            <div class="case-entry-header" onclick="toggleCase(${c.id})">
+              <div class="case-number mono">${c.category ? `CASE FILE ${c.number}` : c.number}</div>
+              <div class="case-title-wrap">
+                <h3>${c.title}</h3>
+                <div class="case-status">
+                  <span class="status-badge">${c.status}</span>
+                  ${c.category ? `<span class="status-badge">${c.category}</span>` : ''}
+                </div>
+              </div>
+              <div class="case-expand mono">+</div>
+            </div>
+            <div class="case-details">
+              <div class="case-content" id="case-content-${c.id}"></div>
+            </div>
+          </div>
+        `).join('');
+
+        caseArray.forEach((c) => renderCaseContent(c));
+      }
+
+      function renderCaseContent(c) {
+        const contentContainer = document.getElementById(`case-content-${c.id}`);
+        if (!contentContainer) return;
+
+        let html = '<div class="case-section-group">';
+
+        if (c.originalThesis) {
+          html += `
+            <div>
+              <div class="case-field-label mono">Original Idea</div>
+              <div class="case-field-content">${c.originalThesis.split('\n').map(p => p.trim()).filter(p => p).join('<br><br>')}</div>
+            </div>
+          `;
+        }
+
+        if (c.overview) {
+          html += `
+            <div>
+              <div class="case-field-label mono">Overview</div>
+              <div class="case-field-content">${c.overview}</div>
+            </div>
+          `;
+        }
+
+        if (c.found) {
+          html += `
+            <div>
+              <div class="case-field-label mono">What I Found</div>
+              <div class="case-field-content">${c.found.split('\n\n').map(p => p.trim()).filter(p => p).join('<br><br>')}</div>
+            </div>
+          `;
+        }
+
+        if (c.whyWeLiked) {
+          html += `
+            <div>
+              <div class="case-field-label mono">Why We Liked It</div>
+              <div class="case-field-content">${c.whyWeLiked}</div>
+            </div>
+          `;
+        }
+
+        if (c.reframe) {
+          html += `
+            <div>
+              <div class="case-field-label mono">The Reframe</div>
+              <div class="case-field-content">${c.reframe.split('\n').map(p => p.trim()).filter(p => p).join('<br><br>')}</div>
+            </div>
+          `;
+        }
+
+        if (c.killed) {
+          html += `
+            <div>
+              <div class="case-field-label mono">Why We Killed It</div>
+              <div class="case-field-content">${c.killed.split('\n').map(p => p.trim()).filter(p => p).join('<br><br>')}</div>
+            </div>
+          `;
+        }
+
+        if (c.moatTest) {
+          html += `
+            <div>
+              <div class="case-field-label mono">The Moat Test</div>
+              <div class="case-field-content">${c.moatTest}</div>
+            </div>
+          `;
+        }
+
+        if (c.additionalInsight) {
+          html += `
+            <div>
+              <div class="case-field-label mono">Additional Insight</div>
+              <div class="case-field-content">${c.additionalInsight.split('\n').map(p => p.trim()).filter(p => p).join('<br><br>')}</div>
+            </div>
+          `;
+        }
+
+        if (c.whyPostponed) {
+          html += `
+            <div>
+              <div class="case-field-label mono">Why Postponed</div>
+              <div class="case-field-content">${c.whyPostponed.split('\n').map(p => p.trim()).filter(p => p).join('<br><br>')}</div>
+            </div>
+          `;
+        }
+
+        if (c.whyNotKilled) {
+          html += `
+            <div>
+              <div class="case-field-label mono">Why Not Killed</div>
+              <div class="case-field-content">${c.whyNotKilled.split('\n').map(p => p.trim()).filter(p => p).join('<br><br>')}</div>
+            </div>
+          `;
+        }
+
+        if (c.validation) {
+          html += `
+            <div>
+              <div class="case-field-label mono">Validation</div>
+              <div class="case-field-content">${c.validation.split('\n').map(p => p.trim()).filter(p => p).join('<br><br>')}</div>
+            </div>
+          `;
+        }
+
+        if (c.positioning) {
+          html += `
+            <div>
+              <div class="case-field-label mono">Positioning</div>
+              <div class="case-field-content">${c.positioning.split('\n').map(p => p.trim()).filter(p => p).join('<br><br>')}</div>
+            </div>
+          `;
+        }
+
+        if (c.approach) {
+          html += `
+            <div>
+              <div class="case-field-label mono">Approach</div>
+              <div class="case-field-content">${c.approach}</div>
+            </div>
+          `;
+        }
+
+        if (c.moatExploration) {
+          html += `
+            <div>
+              <div class="case-field-label mono">Moat Exploration</div>
+              <div class="case-field-content">${c.moatExploration}</div>
+            </div>
+          `;
+        }
+
+        if (c.caveat) {
+          html += `
+            <div>
+              <div class="case-field-label mono">Caveat</div>
+              <div class="case-field-content">${c.caveat}</div>
+            </div>
+          `;
+        }
+
+        if (c.investorSide) {
+          html += `
+            <div>
+              <div class="case-field-label mono">Investor Side</div>
+              <div class="case-field-content">${c.investorSide}</div>
+            </div>
+          `;
+        }
+
+        if (c.killShot) {
+          html += `
+            <div>
+              <div class="case-field-label mono">Kill Shot</div>
+              <div class="case-field-content">${c.killShot}</div>
+            </div>
+          `;
+        }
+
+        if (c.interestingDirection) {
+          html += `
+            <div>
+              <div class="case-field-label mono">Interesting Direction</div>
+              <div class="case-field-content">${c.interestingDirection}</div>
+            </div>
+          `;
+        }
+
+        if (c.deeperQuestion) {
+          html += `
+            <div>
+              <div class="case-field-label mono">Deeper Question</div>
+              <div class="case-field-content">${c.deeperQuestion}</div>
+            </div>
+          `;
+        }
+
+        if (c.research) {
+          html += `
+            <div>
+              <div class="case-field-label mono">Research</div>
+              <div class="case-field-content">${c.research.split('\n').map(p => p.trim()).filter(p => p).join('<br><br>')}</div>
+            </div>
+          `;
+        }
+
+        html += `
+          <div class="case-lesson">
+            <div class="case-lesson-label mono">Lesson</div>
+            <div class="case-lesson-text">"${c.lesson}"</div>
+          </div>
+        `;
+
+        if (c.links && c.links.length > 0) {
+          html += '<div class="case-link-list">';
+          c.links.forEach((link) => {
+            html += `<a href="${link.url}" target="_blank" rel="noreferrer" class="case-link mono">${link.text}</a>`;
+          });
+          html += '</div>';
+        }
+
+        html += '</div>';
+        contentContainer.innerHTML = html;
+      }
+
+      function toggleCase(id) {
+        const entry = document.querySelector(`[data-case-id="${id}"]`);
+        if (entry) {
+          entry.classList.toggle('open');
+        }
+      }
+
+      function getAllCases() {
+        return [
+          ...caseStudies.killed,
+          ...caseStudies.shelved,
+          ...caseStudies.active
+        ];
+      }
+
+      // Initialize
+      renderCases('killed-cases', caseStudies.killed);
+      renderCases('shelved-cases', caseStudies.shelved);
+      renderCases('active-cases', caseStudies.active);
+
+      // Theme functionality (same as homepage)
+      const themeMap = {
+        electric: '#00A8FF',
+        terminal: '#00FF88',
+        amber: '#FFB000',
+        violet: '#9B5CFF',
+        red: '#FF3B4E',
+        ice: '#E8F1FF',
+      };
+
+      const themeToggle = document.querySelector('.theme-toggle');
+      const themePanel = document.getElementById('theme-panel');
+      const themeStatus = document.getElementById('theme-status');
+      const themeOptions = document.querySelectorAll('.theme-option');
+
+      function hexToRgb(hex) {
+        const clean = hex.replace('#', '');
+        const parsed = clean.length === 3
+          ? clean.split('').map((char) => char + char).join('')
+          : clean;
+        const value = parseInt(parsed, 16);
+        return `${(value >> 16) & 255}, ${(value >> 8) & 255}, ${value & 255}`;
+      }
+
+      function tintHex(hex, amount) {
+        const clean = hex.replace('#', '');
+        const parsed = clean.length === 3
+          ? clean.split('').map((char) => char + char).join('')
+          : clean;
+        const num = parseInt(parsed, 16);
+        const r = Math.min(255, Math.max(0, ((num >> 16) & 255) + amount));
+        const g = Math.min(255, Math.max(0, ((num >> 8) & 255) + amount));
+        const b = Math.min(255, Math.max(0, (num & 255) + amount));
+        return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+      }
+
+      function applyTheme(themeKey) {
+        const accent = themeMap[themeKey] || themeMap.electric;
+        const root = document.documentElement;
+        root.style.setProperty('--accent', accent);
+        root.style.setProperty('--accent-rgb', hexToRgb(accent));
+        root.style.setProperty('--accent-2', tintHex(accent, 28));
+        root.style.setProperty('--warning', tintHex(accent, 18));
+
+        themeOptions.forEach((option) => {
+          const active = option.dataset.theme === themeKey;
+          option.classList.toggle('is-active', active);
+        });
+
+        localStorage.setItem('asb9-theme', themeKey);
+
+        if (themeStatus) {
+          themeStatus.textContent = `ASB9.SYS // THEME CHANGED`;
+          themeStatus.classList.add('show');
+          clearTimeout(window.__themeStatusTimer);
+          window.__themeStatusTimer = setTimeout(() => themeStatus.classList.remove('show'), 1400);
+        }
+      }
+
+      function initTheme() {
+        const saved = localStorage.getItem('asb9-theme');
+        const initial = themeMap[saved] ? saved : 'electric';
+        applyTheme(initial);
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          const open = themePanel && themePanel.classList.toggle('open');
+          themeToggle.setAttribute('aria-expanded', String(open));
+        });
+      }
+
+      document.addEventListener('click', (event) => {
+        const withinTheme = event.target.closest('.theme-wrap');
+        if (!withinTheme && themePanel) {
+          themePanel.classList.remove('open');
+          if (themeToggle) themeToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      themeOptions.forEach((option) => {
+        option.addEventListener('click', () => {
+          applyTheme(option.dataset.theme);
+          if (themePanel) {
+            themePanel.classList.remove('open');
+          }
+          if (themeToggle) {
+            themeToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && themePanel && themePanel.classList.contains('open')) {
+          themePanel.classList.remove('open');
+          if (themeToggle) themeToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // Reveal animation
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+      // Command palette
+      const palette = document.getElementById('command-palette');
+      const paletteInput = document.getElementById('command-input');
+
+      function openPalette() {
+        if (!palette) return;
+        palette.classList.add('open');
+        palette.setAttribute('aria-hidden', 'false');
+        setTimeout(() => paletteInput && paletteInput.focus(), 30);
+      }
+
+      function closePalette() {
+        if (!palette) return;
+        palette.classList.remove('open');
+        palette.setAttribute('aria-hidden', 'true');
+      }
+
+      document.addEventListener('keydown', (event) => {
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+          event.preventDefault();
+          if (palette.classList.contains('open')) closePalette();
+          else openPalette();
+        }
+        if (event.key === 'Escape' && palette.classList.contains('open')) {
+          closePalette();
+        }
+      });
+
+      palette.addEventListener('click', (event) => {
+        if (event.target === palette) closePalette();
+      });
+
+      document.querySelectorAll('.command-item').forEach((button) => {
+        button.addEventListener('click', () => {
+          const action = button.dataset.action;
+          if (action === 'close-all') {
+            document.querySelectorAll('.case-entry.open').forEach(e => {
+              e.classList.remove('open');
+            });
+          }
+          closePalette();
+        });
+      });
+
+      // ASCII background (same as homepage)
+      (() => {
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const canvas = document.getElementById('ascii-bg');
+        const ctx = canvas.getContext('2d');
+        const glyphs = '01ASB9/+*-.:_#';
+        const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#00A8FF';
+
+        const hexToRgbValue = (hex) => {
+          const clean = hex.replace('#', '');
+          const value = clean.length === 3
+            ? clean.split('').map((char) => char + char).join('')
+            : clean;
+          const num = parseInt(value, 16);
+          return {
+            r: (num >> 16) & 255,
+            g: (num >> 8) & 255,
+            b: num & 255,
+          };
+        };
+
+        const rgb = hexToRgbValue(accent);
+        const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2, active: false };
+        let width = 0;
+        let height = 0;
+        let cols = 0;
+        let rows = 0;
+        let cell = 18;
+        let grid = [];
+
+        function buildGrid() {
+          width = window.innerWidth;
+          height = window.innerHeight;
+          cell = width < 700 ? 16 : 18;
+          cols = Math.ceil(width / cell) + 2;
+          rows = Math.ceil(height / cell) + 2;
+          grid = Array.from({ length: rows * cols }, () => ({
+            char: glyphs[Math.floor(Math.random() * glyphs.length)],
+            drift: Math.random() * Math.PI * 2,
+            alpha: 0.08 + Math.random() * 0.18,
+          }));
+
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          canvas.width = Math.max(1, Math.floor(width * dpr));
+          canvas.height = Math.max(1, Math.floor(height * dpr));
+          canvas.style.width = width + 'px';
+          canvas.style.height = height + 'px';
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        function drawStatic() {
+          ctx.clearRect(0, 0, width, height);
+          ctx.font = `${cell * 0.8}px "SFMono-Regular", Consolas, monospace`;
+          ctx.textBaseline = 'top';
+
+          for (let y = 0; y < rows; y++) {
+            for (let x = 0; x < cols; x++) {
+              const i = y * cols + x;
+              const px = x * cell;
+              const py = y * cell;
+              const char = grid[i].char;
+              const baseAlpha = 0.08 + ((x + y) % 7) * 0.012;
+              ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${baseAlpha})`;
+              ctx.fillText(char, px, py);
+            }
+          }
+        }
+
+        function drawFrame(time) {
+          const currentAccent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#00A8FF';
+          const liveRgb = hexToRgbValue(currentAccent);
+          ctx.clearRect(0, 0, width, height);
+          ctx.font = `${cell * 0.8}px "SFMono-Regular", Consolas, monospace`;
+          ctx.textBaseline = 'top';
+
+          for (let y = 0; y < rows; y++) {
+            for (let x = 0; x < cols; x++) {
+              const i = y * cols + x;
+              const cellX = x * cell;
+              const cellY = y * cell;
+              const dx = cellX + cell * 0.5 - mouse.x;
+              const dy = cellY + cell * 0.5 - mouse.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              const influence = mouse.active ? Math.max(0, 1 - dist / 180) : 0;
+
+              if (!reducedMotion && Math.random() < 0.008) {
+                grid[i].char = glyphs[Math.floor(Math.random() * glyphs.length)];
+              }
+
+              const flicker = 0.08 + (Math.sin(time * 0.0018 + grid[i].drift + x * 0.8 + y * 0.4) + 1) * 0.05;
+              const alpha = Math.min(0.9, grid[i].alpha + flicker + influence * 0.45);
+
+              ctx.fillStyle = `rgba(${liveRgb.r}, ${liveRgb.g}, ${liveRgb.b}, ${alpha})`;
+              ctx.fillText(grid[i].char, cellX, cellY);
+
+              if (mouse.active && influence > 0.12) {
+                const glow = Math.min(0.75, influence * 0.8 + 0.12);
+                ctx.fillStyle = `rgba(${liveRgb.r}, ${liveRgb.g}, ${liveRgb.b}, ${glow * 0.35})`;
+                ctx.fillText(grid[i].char, cellX + (dx / 28) * influence, cellY + (dy / 28) * influence);
+              }
+            }
+          }
+
+          if (!reducedMotion && mouse.active) {
+            ctx.beginPath();
+            ctx.fillStyle = `rgba(${liveRgb.r}, ${liveRgb.g}, ${liveRgb.b}, 0.06)`;
+            ctx.arc(mouse.x, mouse.y, 110, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          requestAnimationFrame(drawFrame);
+        }
+
+        initTheme();
+
+        if (reducedMotion) {
+          buildGrid();
+          drawStatic();
+          return;
+        }
+
+        buildGrid();
+        window.addEventListener('pointermove', (event) => {
+          mouse.x = event.clientX;
+          mouse.y = event.clientY;
+          mouse.active = true;
+        }, { passive: true });
+
+        window.addEventListener('pointerleave', () => {
+          mouse.active = false;
+        });
+
+        window.addEventListener('pointerdown', (event) => {
+          mouse.x = event.clientX;
+          mouse.y = event.clientY;
+          mouse.active = true;
+        }, { passive: true });
+
+        window.addEventListener('resize', buildGrid);
+        requestAnimationFrame(drawFrame);
+      })();
+    </script>
+  </body>
+</html>
